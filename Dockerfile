@@ -48,7 +48,9 @@ ENV LANG=en_US.UTF-8
 RUN npm install -g @anthropic-ai/claude-code
 
 # Create non-root user 'dev' with UID 1000
-RUN useradd -m -s /bin/bash -u 1000 dev \
+# Ubuntu 24.04 has 'ubuntu' user with UID 1000, remove it first
+RUN userdel -r ubuntu 2>/dev/null || true \
+    && useradd -m -s /bin/bash -u 1000 dev \
     && echo "dev ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/dev \
     && chmod 0440 /etc/sudoers.d/dev
 
